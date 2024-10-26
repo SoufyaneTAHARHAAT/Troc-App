@@ -1,0 +1,53 @@
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        nav {
+            background-color: #4CAF50; /* Green background */
+            padding: 15px; /* Padding around the nav */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+        }
+
+        nav ul {
+            list-style-type: none; /* Remove bullet points */
+            padding: 0; /* Remove default padding */
+            margin: 0; /* Remove default margin */
+            display: flex; /* Use flexbox for horizontal layout */
+            justify-content: space-around; /* Evenly space items */
+        }
+
+        nav ul li {
+            flex: 1; /* Make items flexible */
+            text-align: center; /* Center align text */
+        }
+
+        nav ul li a {
+            text-decoration: none; /* Remove underline from links */
+            color: white; /* White text color */
+            padding: 10px; /* Padding around links */
+            display: block; /* Make links block elements */
+            transition: background-color 0.3s; /* Smooth transition for hover effect */
+        }
+
+        nav ul li a:hover, header:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+        header {
+            text-align: center;
+            border: 5px solid green;
+            /* border-color: #45a049; */
+            border-radius: 10px;
+            font-size: 2.5em;
+            background-color: green;
+            width: 30%;
+            margin-left: 35%;
+            margin-top: 10px;
+        }
+        header a {
+            text-decoration: none;
+            color: aliceblue;
+        }

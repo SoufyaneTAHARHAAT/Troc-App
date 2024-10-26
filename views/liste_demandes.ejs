@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/liste_demandes.css">
+    <title>Demandes</title>
+    
+</head>
+<body>
+    <%- include('../layouts/header.ejs') %>
+    <div class="container">
+        <h1>Liste des Demandes</h1>
+        <% if(demandes.length === 0) { %> 
+            <h2>Vous n'avez aucune demande</h2>
+        <% } else { %>
+            <% demandes.forEach((dem, index) => { %>
+                <% if(dem.idTroqueur.includes('g3')) { %> 
+                    <h2 id="demande-title-<%= index %>">Demande envoyée</h2>
+                <% } else { %> 
+                    <h2 id="demande-title-<%= index %>">Demande reçue</h2>
+                <% } %> 
+                
+                <p>ID Troqueur: <%= dem.idTroqueur %></p>
+                <p>ID Destinataire: <%= dem.idDestinataire %></p>
+                <p>ID Fichier: <%= dem.idFichier %></p>
+                <p>Date Fichier: <%= dem.dateFichier %></p>
+                <p>ID Message: <%= dem.idMessage %></p>
+                <p>Email: <%= dem.mail %></p>
+                <p>Telephone: <%= dem.telephone %></p>
+                <p>Nom Auteur: <%= dem.nomAuteur %></p>
+                <p>Checksum: <%= dem.checksum %></p>
+
+                <% if(!dem.idTroqueur.includes('g3')) { %> 
+                    <select id="statutAutorisation-<%= index %>" name="statutAutorisation" onchange="updateDemandeStatus(<%= index %>)" required>
+                        <option value="accepte">Accepter</option>
+                        <option value="refuse">Refuser</option>
+                    </select>
+                <% } %> 
+            <% }); %>
+        <% } %>
+    </div>   
+    <%- include("../layouts/footer.ejs") %>
+
+    <script src="/scripts/liste_demandes.js"></script>
+</body>
+</html>

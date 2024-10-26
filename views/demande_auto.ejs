@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <%- include('../layouts/header.ejs') %>
+    <h1>Formulaire de Demande d'Autorisation</h1>
+    <form action="/autorisation" method="post">
+        
+
+        <label for="idDestinataire">ID Destinataire (format: gX.X):</label>
+        <input type="text" id="idDestinataire" name="idDestinataire" pattern="^g\d\.\d+$" required>
+        <br>
+
+        <label for="idFichier">ID Fichier (format: gX.X):</label>
+        <input type="text" id="idFichier" name="idFichier" pattern="^g\d\.\d+$" required>
+        <br>
+
+        <label for="dateFichier">Date Fichier (format: jj-mm-aaaa):</label>
+        <input type="text" id="dateFichier" name="dateFichier" pattern="^\d{2}-\d{2}-\d{4}$" required>
+        <br>
+
+        <h2>Message de Demande d'Autorisation</h2>
+
+        <input type="hidden" id="statutAutorisation" name="statutAutorisation" value="demande" required>
+        <br>
+
+        <label for="dateDemande">Date de Demande (format: jj-mm-aaaa):</label>
+        <input type="text" id="dateDemande" name="dateDemande" pattern="^\d{2}-\d{2}-\d{4}$" required>
+        <br>
+
+        <label for="idMessage">ID Message:</label>
+        <input type="text" id="idMessage" name="idMessage" required>
+        <br>
+
+        <h3>Coordonnées</h3>
+        <label for="mail">Mail:</label>
+        <input type="email" id="mail" name="mail">
+        <br>
+
+        <label for="telephone">Téléphone:</label>
+        <input type="text" id="telephone" name="telephone">
+        <br>
+
+        <label for="nomAuteur">Nom de l'Auteur:</label>
+        <input type="text" id="nomAuteur" name="nomAuteur" required>
+        <br>
+
+        <label for="checksum">Checksum:</label>
+        <input type="text" id="checksum" name="checksum" required>
+        <br>
+
+        <button type="submit">Soumettre</button>
+    </form>
+    <%- include("../layouts/footer.ejs") %>
+
+    <script src="/scripts/demande_auto.js"></script>
+</body>
+</html>

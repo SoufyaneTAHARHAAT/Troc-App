@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <%- include('../layouts/header.ejs') %>
+    <form action="/submit" method="post">
+        <!-- Checksum -->
+        <label for="checksum">Checksum:</label>
+        <input type="text" id="checksum" name="checksum" required>
+        <br><br>
+
+        <!-- ID Troqueur -->
+        <label for="idTroqueur">ID Troqueur:</label>
+        <input type="text" id="idTroqueur" name="idTroqueur" pattern="^g\d\.\d+$" required>
+        <br><br>
+
+        <!-- ID Destinataire -->
+        <label for="idDestinataire">ID Destinataire:</label>
+        <input type="text" id="idDestinataire" name="idDestinataire" pattern="^g\d\.\d+$" required>
+        <br><br>
+
+        <!-- ID Fichier -->
+        <label for="idFichier">ID Fichier:</label>
+        <input type="text" id="idFichier" name="idFichier" pattern="^g\d\.\d+$" required>
+        <br><br>
+
+        <!-- Date Fichier -->
+        <label for="dateFichier">Date du fichier (jj-mm-aaaa):</label>
+        <input type="text" id="dateFichier" name="dateFichier" pattern="^\d{2}-\d{2}-\d{4}$" required>
+        <br><br>
+
+        <!-- Messages -->
+        <fieldset>
+            <legend>Messages</legend>
+
+            <!-- Date du Message -->
+            <label for="dateMessage">Date du message (jj-mm-aaaa):</label>
+            <input type="text" id="dateMessage" name="messages[0][dateMessage]" pattern="^\d{2}-\d{2}-\d{4}$" required>
+            <br><br>
+
+            <!-- Statut -->
+            <label for="statut">Statut:</label>
+            <select id="statut" name="messages[0][statut]" required>
+                <option value="accepte">Accepté</option>
+                <option value="valide">Validé</option>
+                <option value="annule">Annulé</option>
+                <option value="refuse">Refusé</option>
+                <option value="propose">Proposé</option>
+            </select>
+            <br><br>
+
+            <!-- Liste d'Objets -->
+            <fieldset>
+                <legend>Liste des objets</legend>
+
+                <!-- Objet 1 -->
+                <label for="titre1">Titre de l'objet:</label>
+                <input type="text" id="titre1" name="messages[0][listeObjet][0][titre]" required>
+                <br><br>
+
+                <label for="description1">Description de l'objet:</label>
+                <textarea id="description1" name="messages[0][listeObjet][0][description]"></textarea>
+                <br><br>
+
+                <label for="qualite1">Qualité (0-5):</label>
+                <input type="number" id="qualite1" name="messages[0][listeObjet][0][qualite]" min="0" max="5" required>
+                <br><br>
+
+                <label for="quantite1">Quantité:</label>
+                <input type="number" id="quantite1" name="messages[0][listeObjet][0][quantite]" min="1" required>
+                <br><br>
+
+                <!-- Ajouter plus d'objets si nécessaire -->
+                <!-- Vous pouvez répéter cette section pour plusieurs objets -->
+
+            </fieldset>
+        </fieldset>
+        
+        <br><br>
+        <button type="submit">Envoyer</button>
+    </form>
+    <%- include("../layouts/footer.ejs") %>
+</body>
+</html>

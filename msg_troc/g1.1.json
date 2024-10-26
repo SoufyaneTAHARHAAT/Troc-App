@@ -1,0 +1,21 @@
+{
+  "checksum": "check3",
+  "idTroqueur": "g3.1",
+  "idDestinataire": "g7.7",
+  "idFichier": "g1.1",
+  "dateFichier": "07-11-2024",
+  "messages": [
+    {
+      "dateMessage": "01-02-2024",
+      "statut": "propose",
+      "listeObjet": [
+        {
+          "titre": "Laptop",
+          "description": "16G RAM",
+          "qualite": 4,
+          "quantite": "1"
+        }
+      ]
+    }
+  ]
+}

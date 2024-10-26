@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/liste_prop.css">
+    <title>Document</title>
+
+</head>
+<body>
+    <%- include('../layouts/header.ejs') %>
+
+    <div id="choiceModal" class="modal">
+        <div class="modal-content">
+            <p>Voulez-vous proposer un troc en contrepartie ?</p>
+            <button id="modalOui">Oui</button>
+            <button id="modalNon">Non</button>
+        </div>
+    </div>
+
+    <div id="proposeForm" class="hidden">
+        <form id="proposeFormContent" action="/submit-proposal" method="post">
+            <!-- ID Fichier (new one) -->
+            <label for="newIdFichier">ID Fichier:</label>
+            <input type="text" id="newIdFichier" name="idFichier" pattern="^g\d\.\d+$" required>
+            <br><br>
+            
+            <!-- Liste d'Objets for the proposal -->
+            <fieldset>
+                <legend>Liste des objets</legend>
+                <label for="newTitre1">Titre de l'objet:</label>
+                <input type="text" id="newTitre1" name="listeObjet[0][titre]" required>
+                <br><br>
+                
+                <label for="newDescription1">Description de l'objet:</label>
+                <textarea id="newDescription1" name="listeObjet[0][description]"></textarea>
+                <br><br>
+                
+                <label for="newQualite1">Qualité (0-5):</label>
+                <input type="number" id="newQualite1" name="listeObjet[0][qualite]" min="0" max="5" required>
+                <br><br>
+                
+                <label for="newQuantite1">Quantité:</label>
+                <input type="number" id="newQuantite1" name="listeObjet[0][quantite]" min="1" required>
+                <br><br>
+            </fieldset>
+            
+            <input type="hidden" id="newIdTroqueur" name="idTroqueur" value="">
+            <input type="hidden" id="newIdDestinataire" name="idDestinataire" value="">
+            <input type="hidden" id="newChecksum" name="checksum" value="">
+            <input type="hidden" id="newDateFichier" name="dateFichier" value="">
+            <br><br>
+            
+            <button type="submit">Envoyer la proposition</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h1>Liste de propositions</h1>
+        <% if(propositions.length === 0) { %> 
+            <h2>Vous n'avez aucune proposition</h2>
+        <% } else { %> 
+            <% propositions.forEach((prop, index) => { %> 
+                <div class="proposition" 
+                     data-id-troqueur="<%= prop.idTroqueur %>" 
+                     data-id-destinataire="<%= prop.idDestinataire %>" 
+                     data-checksum="<%= prop.checksum %>" 
+                     data-date-fichier="<%= prop.dateFichier %>"
+                     data-index="<%= index %>">
+                    <% if(prop.idTroqueur.includes('g3')) { %> 
+                        <h2 id="proposition-title-<%= index %>">Message envoyé</h2>
+                    <% } else { %> 
+                        <h2 id="proposition-title-<%= index %>">Message reçu</h2>
+                    <% } %>
+                    
+                    <p>Checksum: <%= prop.checksum %></p>
+                    <p>ID Troqueur: <%= prop.idTroqueur %></p>
+                    <p>ID Destinataire: <%= prop.idDestinataire %></p>
+                    <p>ID Fichier: <%= prop.idFichier %></p>
+                    <p>Date Fichier: <%= prop.dateFichier %></p>
+                    <p>Date Message: <%= prop.messages[0].dateMessage %></p>
+                    <p>Statut: <%= prop.messages[0].statut %></p>
+                    <% prop.messages[0].listeObjet.forEach(obj => { %> 
+                        <p>Objet: <%= obj.titre %></p>
+                        <p>Description: <%= obj.description %></p>
+                        <p>Qualité: <%= obj.qualite %></p>
+                        <p>Quantité: <%= obj.quantite %></p>
+                    <% }) %>
+                    
+                    <% if(!prop.idTroqueur.includes('g3')) { %> 
+                        <select id="statutAutorisation-<%= index %>" name="statutAutorisation" onchange="updatePropositionStatus(<%= index %>)" required>
+                            <option value="accepte">Accepter</option>
+                            <option value="valide">Valider</option>
+                            <option value="annule">Annuler</option>
+                            <option value="refuse">Refuser</option>
+                        </select>
+                    <% } %>
+                </div>
+            <% }) %>            
+        <% } %>
+    </div>
+    <%- include("../layouts/footer.ejs") %>
+
+    <script src="/scripts/liste_prop.js"></script>
+</body>
+</html>

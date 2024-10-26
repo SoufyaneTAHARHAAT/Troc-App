@@ -1,0 +1,5 @@
+
+main {
+      flex: 1; /* Takes all available space, pushing the footer to the bottom */
+      padding: 20px;
+    }

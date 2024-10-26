@@ -1,0 +1,30 @@
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Minimum height of the body covers the full view height */
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        footer {
+            background-color: #4CAF50; /* Same green as the header */
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        footer a {
+            color: white;
+            text-decoration: underline;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #45a049; /* Slightly darker green on hover */
+        }
+        .content {
+            flex: 1;
+        }
