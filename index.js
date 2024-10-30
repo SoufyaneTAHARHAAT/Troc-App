@@ -110,7 +110,7 @@ app.post("/autorisation", (req, res) => {
     const jsonData = req.body;
 
     // Read the counter file
-    fs.readFile('./counter.json', 'utf8', (err, data) => {
+    fs.readFile('./counterAut.json', 'utf8', (err, data) => {
         if (err) {
             console.error('Erreur lors de la lecture du fichier du compteur:', err);
             return res.status(500).send('Erreur lors de la récupération du compteur');
@@ -148,13 +148,44 @@ app.post("/autorisation", (req, res) => {
 });
 
 app.post("/submit", (req, res) => {
-    // Créer un objet JSON à partir des données du formulaire
+    // Extraire les données du formulaire
     const jsonData = req.body;
+    fs.readFile('./counterProp.json', 'utf8', (err, data) => {
+        if (err) {
+            console.error('Erreur lors de la lecture du fichier du compteur:', err);
+            return res.status(500).send('Erreur lors de la récupération du compteur');
+        }
+
+        let counterData = JSON.parse(data);
+        counterData.lastUsed += 1; // Increment the last used number
+
+        const idTroqueur = `g3.${counterData.lastUsed}`; // Generate the new idTroqueur
+    // Construire l'objet JSON dans le format souhaité
+        const formattedData = {
+            checksum: jsonData.checksum,
+            idTroqueur: idTroqueur,
+            idDestinataire: jsonData.idDestinataire,
+            idFichier: jsonData.idFichier,
+            dateFichier: jsonData.dateFichier,
+            messages: [
+                {
+                    dateMessage: jsonData.dateMessage,
+                    statut: jsonData.statut,
+                    listeObjet: jsonData.messages[0].listeObjet.map(objet => ({
+                        titre: objet.titre,
+                        description: objet.description,
+                        qualite: objet.qualite,
+                        quantite: objet.quantite
+                    }))
+                }
+            ]
+        };
+
     // Définir le chemin et le nom du fichier JSON
     const filePath = `./msg_troc/${jsonData.idFichier}.json`;
 
-    // Écrire les données dans le fichier JSON
-    fs.writeFile(filePath, JSON.stringify(jsonData, null, 2), (err) => {
+    // Écrire les données formatées dans le fichier JSON
+    fs.writeFile(filePath, JSON.stringify(formattedData, null, 2), (err) => {
         if (err) {
             console.error('Erreur lors de l\'écriture du fichier JSON:', err);
             return res.status(500).send('Erreur lors de la sauvegarde des données');
@@ -163,29 +194,36 @@ app.post("/submit", (req, res) => {
         console.log('Données sauvegardées dans data.json');
         res.redirect("/accueil");
     });
+    });
 });
 
-app.post('/propositions', (req, res) => {
-    const { checksum, idTroqueur, idDestinataire, idFichier, dateFichier, dateMessage, statut, listeObjet } = req.body;
 
-    const data = {
-        checksum,
-        idTroqueur,
-        idDestinataire,
-        idFichier,
-        dateFichier,
+app.post('/submit-proposal', (req, res) => {
+    const jsonData = req.body;
+
+    const formattedData = {
+        checksum: jsonData.checksum,
+        idTroqueur: jsonData.idTroqueur,
+        idDestinataire: jsonData.idDestinataire,
+        idFichier: jsonData.idFichier,
+        dateFichier: jsonData.dateFichier,
         messages: [
             {
-                dateMessage,
-                statut,
-                listeObjet,
+                dateMessage: jsonData.dateMessage,
+                statut: jsonData.statut, // Capture chosen statut
+                listeObjet: jsonData.listeObjet.map(objet => ({
+                    titre: objet.titre,
+                    description: objet.description,
+                    qualite: objet.qualite,
+                    quantite: objet.quantite
+                }))
             },
         ],
     };
 
-    const filePath = path.join(__dirname, `msg_troc/${req.body.idTroqueur}.json`);
+    const filePath = path.join(__dirname, `msg_troc/${req.body.idFichier}.json`);
 
-    fs.writeFile(filePath, JSON.stringify(data, null, 2), (err) => {
+    fs.writeFile(filePath, JSON.stringify(formattedData, null, 2), (err) => {
         if (err) {
             console.error('Error writing file', err);
             return res.status(500).send('Internal Server Error');

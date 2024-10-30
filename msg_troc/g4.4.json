@@ -1,0 +1,21 @@
+{
+  "checksum": "check1",
+  "idTroqueur": "g1.1",
+  "idDestinataire": "g1.1",
+  "idFichier": "g4.4",
+  "dateFichier": "30-10-2024",
+  "messages": [
+    {
+      "dateMessage": "30-10-2024",
+      "statut": "valide",
+      "listeObjet": [
+        {
+          "titre": "Chair",
+          "description": "New Chair",
+          "qualite": "4",
+          "quantite": "4"
+        }
+      ]
+    }
+  ]
+}

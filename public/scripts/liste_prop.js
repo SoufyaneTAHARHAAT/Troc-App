@@ -1,5 +1,5 @@
 function updatePropositionStatus(index) {
-    const selectElement = document.getElementById(`statutAutorisation-${index}`);
+    const selectElement = document.getElementById(`statut-${index}`);
     const titleElement = document.getElementById(`proposition-title-${index}`);
     const modal = document.getElementById('choiceModal');
     const modalOui = document.getElementById('modalOui');
@@ -41,6 +41,7 @@ function updatePropositionStatus(index) {
 
         modalOui.addEventListener('click', function() {
             modal.style.display = 'none';
+            document.getElementById('chosenStatut').value = selectElement.value;
             proposeForm.classList.remove('hidden');
             
             // Pre-fill the hidden fields with existing data
@@ -66,4 +67,17 @@ window.onclick = function(event) {
     if (event.target === modal) {
         modal.style.display = 'none';
     }
+};
+window.onload = function() {
+    // Get the current date
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+    const year = today.getFullYear();
+
+    // Format the date as "jj-mm-aaaa"
+    const formattedDate = `${day}-${month}-${year}`;
+
+    // Set the date fields
+    document.getElementById('newDateMessage').value = formattedDate;
 };

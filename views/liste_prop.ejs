@@ -24,7 +24,7 @@
             <label for="newIdFichier">ID Fichier:</label>
             <input type="text" id="newIdFichier" name="idFichier" pattern="^g\d\.\d+$" required>
             <br><br>
-            
+        
             <!-- Liste d'Objets for the proposal -->
             <fieldset>
                 <legend>Liste des objets</legend>
@@ -44,7 +44,8 @@
                 <input type="number" id="newQuantite1" name="listeObjet[0][quantite]" min="1" required>
                 <br><br>
             </fieldset>
-            
+            <input type="hidden" id="newDateMessage" name="dateMessage" pattern="^\d{2}-\d{2}-\d{4}$" required>
+            <input type="hidden" id="chosenStatut" name="statut" value="">
             <input type="hidden" id="newIdTroqueur" name="idTroqueur" value="">
             <input type="hidden" id="newIdDestinataire" name="idDestinataire" value="">
             <input type="hidden" id="newChecksum" name="checksum" value="">
@@ -88,7 +89,7 @@
                     <% }) %>
                     
                     <% if(!prop.idTroqueur.includes('g3')) { %> 
-                        <select id="statutAutorisation-<%= index %>" name="statutAutorisation" onchange="updatePropositionStatus(<%= index %>)" required>
+                        <select id="statut-<%= index %>" name="statut" onchange="updatePropositionStatus(<%= index %>)" required>
                             <option value="accepte">Accepter</option>
                             <option value="valide">Valider</option>
                             <option value="annule">Annuler</option>

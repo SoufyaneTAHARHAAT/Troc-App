@@ -13,11 +13,6 @@
         <input type="text" id="checksum" name="checksum" required>
         <br><br>
 
-        <!-- ID Troqueur -->
-        <label for="idTroqueur">ID Troqueur:</label>
-        <input type="text" id="idTroqueur" name="idTroqueur" pattern="^g\d\.\d+$" required>
-        <br><br>
-
         <!-- ID Destinataire -->
         <label for="idDestinataire">ID Destinataire:</label>
         <input type="text" id="idDestinataire" name="idDestinataire" pattern="^g\d\.\d+$" required>
@@ -39,19 +34,12 @@
 
             <!-- Date du Message -->
             <label for="dateMessage">Date du message (jj-mm-aaaa):</label>
-            <input type="text" id="dateMessage" name="messages[0][dateMessage]" pattern="^\d{2}-\d{2}-\d{4}$" required>
+            <input type="text" id="dateMessage" name="dateMessage" pattern="^\d{2}-\d{2}-\d{4}$" required>
             <br><br>
 
             <!-- Statut -->
-            <label for="statut">Statut:</label>
-            <select id="statut" name="messages[0][statut]" required>
-                <option value="accepte">Accepté</option>
-                <option value="valide">Validé</option>
-                <option value="annule">Annulé</option>
-                <option value="refuse">Refusé</option>
-                <option value="propose">Proposé</option>
-            </select>
-            <br><br>
+            <input type="hidden" id="statut" name="statut" value="propose" required>
+            <br>
 
             <!-- Liste d'Objets -->
             <fieldset>
@@ -84,5 +72,7 @@
         <button type="submit">Envoyer</button>
     </form>
     <%- include("../layouts/footer.ejs") %>
+
+    <script src="/scripts/proposer.js"></script>
 </body>
 </html>
