@@ -1,4 +1,4 @@
-const schema = {
+const schemaAuto = {
         "type": "object",
         "required": [
             "idTroqueur",
@@ -81,4 +81,4 @@ const schema = {
             }
         }
 }
-export default schema;
+export default schemaAuto;

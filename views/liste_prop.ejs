@@ -68,38 +68,53 @@
                      data-checksum="<%= prop.checksum %>" 
                      data-date-fichier="<%= prop.dateFichier %>"
                      data-index="<%= index %>">
-                    <% if(prop.idTroqueur.includes('g3')) { %> 
-                        <h2 id="proposition-title-<%= index %>">Message envoyé</h2>
-                    <% } else { %> 
-                        <h2 id="proposition-title-<%= index %>">Message reçu</h2>
-                    <% } %>
-                    
-                    <p>Checksum: <%= prop.checksum %></p>
-                    <p>ID Troqueur: <%= prop.idTroqueur %></p>
-                    <p>ID Destinataire: <%= prop.idDestinataire %></p>
-                    <p>ID Fichier: <%= prop.idFichier %></p>
-                    <p>Date Fichier: <%= prop.dateFichier %></p>
-                    <p>Date Message: <%= prop.messages[0].dateMessage %></p>
-                    <p>Statut: <%= prop.messages[0].statut %></p>
-                    <% prop.messages[0].listeObjet.forEach(obj => { %> 
-                        <p>Objet: <%= obj.titre %></p>
-                        <p>Description: <%= obj.description %></p>
-                        <p>Qualité: <%= obj.qualite %></p>
-                        <p>Quantité: <%= obj.quantite %></p>
-                    <% }) %>
-                    
-                    <% if(!prop.idTroqueur.includes('g3')) { %> 
-                        <select id="statut-<%= index %>" name="statut" onchange="updatePropositionStatus(<%= index %>)" required>
-                            <option value="accepte">Accepter</option>
-                            <option value="valide">Valider</option>
-                            <option value="annule">Annuler</option>
-                            <option value="refuse">Refuser</option>
-                        </select>
+                     
+                    <% if (prop.error) { %>
+                        <h2 style="color: red;">Erreur : <%= prop.error %></h2>
+                        <p>Fichier : <%= prop.fileName %></p> <!-- Affiche le nom du fichier non valide -->
+                        <% if (prop.details) { %>
+                            <p>Détails de l'erreur :</p>
+                            <ul>
+                                <% prop.details.forEach(err => { %>
+                                    <li><%= err.message %></li>
+                                <% }); %>
+                            </ul>
+                        <% } %>
+                    <% } else { %>
+                        <% if (prop.idTroqueur.includes('g3')) { %> 
+                            <h2 id="proposition-title-<%= index %>">Message envoyé</h2>
+                        <% } else { %> 
+                            <h2 id="proposition-title-<%= index %>">Message reçu</h2>
+                        <% } %>
+                        
+                        <p>Checksum: <%= prop.checksum %></p>
+                        <p>ID Troqueur: <%= prop.idTroqueur %></p>
+                        <p>ID Destinataire: <%= prop.idDestinataire %></p>
+                        <p>ID Fichier: <%= prop.idFichier %></p>
+                        <p>Date Fichier: <%= prop.dateFichier %></p>
+                        <p>Date Message: <%= prop.messages[0].dateMessage %></p>
+                        <p>Statut: <%= prop.messages[0].statut %></p>
+                        <% prop.messages[0].listeObjet.forEach(obj => { %> 
+                            <p>Objet: <%= obj.titre %></p>
+                            <p>Description: <%= obj.description %></p>
+                            <p>Qualité: <%= obj.qualite %></p>
+                            <p>Quantité: <%= obj.quantite %></p>
+                        <% }) %>
+                        
+                        <% if (!prop.idTroqueur.includes('g3')) { %> 
+                            <select id="statut-<%= index %>" name="statut" onchange="updatePropositionStatus(<%= index %>)" required>
+                                <option value="accepte">Accepter</option>
+                                <option value="valide">Valider</option>
+                                <option value="annule">Annuler</option>
+                                <option value="refuse">Refuser</option>
+                            </select>
+                        <% } %>
                     <% } %>
                 </div>
             <% }) %>            
         <% } %>
     </div>
+    
     <%- include("../layouts/footer.ejs") %>
 
     <script src="/scripts/liste_prop.js"></script>
