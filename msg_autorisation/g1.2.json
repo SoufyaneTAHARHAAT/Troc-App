@@ -1,0 +1,17 @@
+{
+  "idTroqueur": "g1.1",
+  "idDestinataire": "g3.1",
+  "idFichier": "1.1",
+  "dateFichier": "01-11-2024",
+  "checksum": "check1",
+  "MessageDemandeAutorisation": {
+    "statutAutorisation": "demande",
+    "date": "01-11-2024",
+    "idMessage": "Premier",
+    "coordonnees": {
+      "mail": "test2@gmail.com",
+      "telephone": "0123456789",
+      "nomAuteur": "Labid"
+    }
+  }
+}

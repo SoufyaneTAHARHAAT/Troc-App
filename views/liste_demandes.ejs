@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles/liste_demandes.css">
     <title>Demandes</title>
-    
 </head>
 <body>
     <%- include('../layouts/header.ejs') %>
@@ -15,29 +14,43 @@
             <h2>Vous n'avez aucune demande</h2>
         <% } else { %>
             <% demandes.forEach((dem, index) => { %>
-                <% if(dem.idTroqueur.includes('g3')) { %> 
-                    <h2 id="demande-title-<%= index %>">Demande envoyée</h2>
-                <% } else { %> 
-                    <h2 id="demande-title-<%= index %>">Demande reçue</h2>
-                <% } %> 
-                
-                <p>ID Troqueur: <%= dem.idTroqueur %></p>
-                <p>ID Destinataire: <%= dem.idDestinataire %></p>
-                <p>ID Fichier: <%= dem.idFichier %></p>
-                <p>Date Fichier: <%= dem.dateFichier %></p>
-                <p>ID Message: <%= dem.idMessage %></p>
-                <p>Email: <%= dem.mail %></p>
-                <p>Telephone: <%= dem.telephone %></p>
-                <p>Nom Auteur: <%= dem.nomAuteur %></p>
-                <p>Checksum: <%= dem.checksum %></p>
-
-                <% if(!dem.idTroqueur.includes('g3')) { %> 
-                    <select id="statutAutorisation-<%= index %>" name="statutAutorisation" onchange="updateDemandeStatus(<%= index %>)" required>
-                        <option value="accepte">Accepter</option>
-                        <option value="refuse">Refuser</option>
-                    </select>
-                <% } %> 
+                <% if (dem.error) { %>
+                    <h2 style="color: red;">Erreur : <%= dem.error %></h2>
+                    <p>Fichier : <%= dem.fileName %></p> <!-- Affiche le nom du fichier -->
+                    <% if (dem.details) { %>
+                        <p>Détails de l'erreur :</p>
+                        <ul>
+                            <% dem.details.forEach(err => { %>
+                                <li><%= err.message %></li>
+                            <% }); %>
+                        </ul>
+                    <% } %>
+                <% } else if (dem.jsonData && dem.jsonData.idTroqueur) { %>
+                    <% if(dem.jsonData.idTroqueur.includes('g3')) { %> 
+                        <h2 id="demande-title-<%= index %>">Demande envoyée</h2>
+                    <% } else { %> 
+                        <h2 id="demande-title-<%= index %>">Demande reçue</h2>
+                    <% } %>
+            
+                    <p>ID Troqueur: <%= dem.jsonData.idTroqueur %></p>
+                    <p>ID Destinataire: <%= dem.jsonData.idDestinataire %></p>
+                    <p>ID Fichier: <%= dem.jsonData.idFichier %></p>
+                    <p>Date Fichier: <%= dem.jsonData.dateFichier %></p>
+                    <p>ID Message: <%= dem.jsonData.MessageDemandeAutorisation.idMessage %></p>
+                    <p>Email: <%= dem.jsonData.MessageDemandeAutorisation.coordonnees.mail %></p>
+                    <p>Telephone: <%= dem.jsonData.MessageDemandeAutorisation.coordonnees.telephone %></p>
+                    <p>Nom Auteur: <%= dem.jsonData.MessageDemandeAutorisation.coordonnees.nomAuteur %></p>
+                    <p>Checksum: <%= dem.jsonData.checksum %></p>
+            
+                    <% if (!dem.jsonData.idTroqueur.includes('g3')) { %> 
+                        <select id="statutAutorisation-<%= index %>" name="statutAutorisation" onchange="updateDemandeStatus(<%= index %>)" required>
+                            <option value="accepte">Accepter</option>
+                            <option value="refuse">Refuser</option>
+                        </select>
+                    <% } %>
+                <% } %>
             <% }); %>
+            
         <% } %>
     </div>   
     <%- include("../layouts/footer.ejs") %>

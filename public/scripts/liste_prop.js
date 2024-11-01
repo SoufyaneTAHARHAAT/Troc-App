@@ -6,8 +6,8 @@ function updatePropositionStatus(index) {
     const modalNon = document.getElementById('modalNon');
 
     const propositionElement = document.querySelector(`.proposition[data-index="${index}"]`);
-    const originalIdTroqueur = propositionElement.getAttribute('data-id-troqueur');
-    const originalIdDestinataire = propositionElement.getAttribute('data-id-destinataire');
+    const originalIdTroqueur = propositionElement.getAttribute('data-id-destinataire');
+    const originalIdDestinataire = propositionElement.getAttribute('data-id-troqueur');
     const originalChecksum = propositionElement.getAttribute('data-checksum');
     const originalDateFichier = propositionElement.getAttribute('data-date-fichier');
 

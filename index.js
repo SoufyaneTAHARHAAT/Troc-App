@@ -4,12 +4,17 @@ import fs from "fs";
 import { dirname, resolve } from "path";
 import path from "path";
 import { fileURLToPath } from "url";
+import Ajv from 'ajv';
+import schema from './msg_autorisation_schema.js';
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
 
 const app = express();
 const port = 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
+const ajv = new Ajv();
+const validate = ajv.compile(schema);
 
 app.get("/", (req, res) => {
     res.redirect("/accueil");
@@ -18,7 +23,7 @@ app.get("/accueil", (req, res) => {
     res.render("accueil.ejs");
 });
 app.get("/demandes", (req, res) => {
-    const folderPath = path.join(__dirname, 'msg_autorisation'); // Update with your folder path
+    const folderPath = path.join(__dirname, 'msg_autorisation');
 
     fs.readdir(folderPath, (err, files) => {
         if (err) {
@@ -26,10 +31,8 @@ app.get("/demandes", (req, res) => {
             return res.status(500).send('Internal Server Error');
         }
 
-        // Initialize an array to hold the parsed JSON objects
         const demandes = [];
 
-        // Creer un array de promesses pour lire et parser chaque fichier json
         const filePromises = files.map(file => {
             const filePath = path.join(folderPath, file);
             return new Promise((resolve, reject) => {
@@ -40,7 +43,17 @@ app.get("/demandes", (req, res) => {
 
                     try {
                         const jsonData = JSON.parse(data);
-                        demandes.push(jsonData); // Ajouter la data du json parsé à array
+                        const isValid = validate(jsonData); // Validation avec Ajv
+        
+                        if (isValid) {
+                            demandes.push({ jsonData });
+                        } else {
+                            demandes.push({
+                                error: 'Demande non conforme',
+                                details: validate.errors, // Ajoute les erreurs de validation
+                                fileName: file // Ajoute le nom du fichier
+                            });
+                        }
                         resolve();
                     } catch (parseError) {
                         reject(parseError);
@@ -49,7 +62,6 @@ app.get("/demandes", (req, res) => {
             });
         });
 
-        // Attendre que tous les fichiers soient lus
         Promise.all(filePromises)
             .then(() => {
                 res.render("liste_demandes.ejs", { demandes });
@@ -120,11 +132,26 @@ app.post("/autorisation", (req, res) => {
         counterData.lastUsed += 1; // Increment the last used number
 
         const idTroqueur = `g3.${counterData.lastUsed}`; // Generate the new idTroqueur
-        // Create a new object with idTroqueur first
+
+        // Create the updated JSON structure
         const updatedJsonData = {
-            idTroqueur: idTroqueur, // Place idTroqueur first
-            ...jsonData // Spread the existing jsonData properties
+            idTroqueur: idTroqueur,
+            idDestinataire: jsonData.idDestinataire,
+            idFichier: jsonData.idFichier,
+            dateFichier: jsonData.dateFichier,
+            checksum: jsonData.checksum,
+            MessageDemandeAutorisation: {
+                statutAutorisation: jsonData.statutAutorisation, // value is "demande" by default
+                date: jsonData.dateDemande,
+                idMessage: jsonData.idMessage,
+                coordonnees: {
+                    mail: jsonData.mail,
+                    telephone: jsonData.telephone,
+                    nomAuteur: jsonData.nomAuteur
+                }
+            }
         };
+
         const filePath = `./msg_autorisation/${jsonData.idFichier}.json`;
 
         fs.writeFile(filePath, JSON.stringify(updatedJsonData, null, 2), (err) => {
@@ -132,10 +159,9 @@ app.post("/autorisation", (req, res) => {
                 console.error('Erreur lors de l\'écriture du fichier JSON:', err);
                 return res.status(500).send('Erreur lors de la sauvegarde des données');
             }
-            console.log('Données sauvegardées dans data.json');
+            console.log('Données sauvegardées dans', filePath);
 
-            // Write the updated counter back to the file
-            fs.writeFile('./counter.json', JSON.stringify(counterData, null, 2), (err) => {
+            fs.writeFile('./counterAut.json', JSON.stringify(counterData, null, 2), (err) => {
                 if (err) {
                     console.error('Erreur lors de l\'écriture du fichier du compteur:', err);
                     return res.status(500).send('Erreur lors de la mise à jour du compteur');
@@ -146,6 +172,7 @@ app.post("/autorisation", (req, res) => {
         });
     });
 });
+
 
 app.post("/submit", (req, res) => {
     // Extraire les données du formulaire
@@ -174,8 +201,8 @@ app.post("/submit", (req, res) => {
                     listeObjet: jsonData.messages[0].listeObjet.map(objet => ({
                         titre: objet.titre,
                         description: objet.description,
-                        qualite: objet.qualite,
-                        quantite: objet.quantite
+                        qualite: parseInt(objet.qualite),
+                        quantite: parseInt(objet.quantite)
                     }))
                 }
             ]
