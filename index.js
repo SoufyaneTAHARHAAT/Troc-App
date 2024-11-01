@@ -5,7 +5,8 @@ import { dirname, resolve } from "path";
 import path from "path";
 import { fileURLToPath } from "url";
 import Ajv from 'ajv';
-import schema from './msg_autorisation_schema.js';
+import schemaAuto from './msg_autorisation_schema.js';
+import schemaTroc from './msg_troc_schema.js';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 
@@ -14,7 +15,9 @@ const port = 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 const ajv = new Ajv();
-const validate = ajv.compile(schema);
+const validateAuto = ajv.compile(schemaAuto);
+const validateTroc = ajv.compile(schemaTroc);
+
 
 app.get("/", (req, res) => {
     res.redirect("/accueil");
@@ -43,14 +46,14 @@ app.get("/demandes", (req, res) => {
 
                     try {
                         const jsonData = JSON.parse(data);
-                        const isValid = validate(jsonData); // Validation avec Ajv
+                        const isValid = validateAuto(jsonData); // Validation avec Ajv
         
                         if (isValid) {
                             demandes.push({ jsonData });
                         } else {
                             demandes.push({
                                 error: 'Demande non conforme',
-                                details: validate.errors, // Ajoute les erreurs de validation
+                                details: validateAuto.errors, // Ajoute les erreurs de validation
                                 fileName: file // Ajoute le nom du fichier
                             });
                         }
@@ -76,7 +79,7 @@ app.get("/demandes", (req, res) => {
 app.get("/propositions", (req, res) => {
     const dirPath = path.join(__dirname, 'msg_troc');
     fs.readdir(dirPath, (err, files) => {
-        if(err) {
+        if (err) {
             console.error('Error reading directory:', err);
             return res.status(500).send('Internal Server Error');
         }
@@ -86,32 +89,42 @@ app.get("/propositions", (req, res) => {
         const filePromises = files.map(file => {
             const filePath = path.join(dirPath, file);
             return new Promise((resolve, reject) => {
-                fs.readFile(filePath, 'utf8',(err, data) => {
-                    if(err) {
+                fs.readFile(filePath, 'utf8', (err, data) => {
+                    if (err) {
                         return reject(err);
                     }
                     try {
                         const jsonData = JSON.parse(data);
-                        propositions.push(jsonData);
+                        const isValid = validateTroc(jsonData); // Validation avec Ajv
+
+                        if (isValid) {
+                            propositions.push(jsonData);
+                        } else {
+                            propositions.push({
+                                error: 'Message non valide',
+                                fileName: file, // Nom du fichier non valide
+                                details: validateTroc.errors // Erreurs de validation
+                            });
+                        }
                         resolve();
-                    }
-                    catch(parseError) {
+                    } catch (parseError) {
                         reject(parseError);
-                    };
+                    }
                 });
             });
         });
+
         Promise.all(filePromises)
-        .then(()=> {
-            res.render("liste_prop.ejs", {propositions});
-        })
-        .catch(error => {
-            console.error('Error reading JSON file', error);
-            res.status(500).send('Internal server problem');
-        });
+            .then(() => {
+                res.render("liste_prop.ejs", { propositions });
+            })
+            .catch(error => {
+                console.error('Error reading JSON file', error);
+                res.status(500).send('Internal server problem');
+            });
     });
-    
 });
+
 app.get("/submit", (req, res) => {
     res.render("proposer.ejs");
 });
@@ -241,8 +254,8 @@ app.post('/submit-proposal', (req, res) => {
                 listeObjet: jsonData.listeObjet.map(objet => ({
                     titre: objet.titre,
                     description: objet.description,
-                    qualite: objet.qualite,
-                    quantite: objet.quantite
+                    qualite: parseInt(objet.qualite),
+                    quantite: parseInt(objet.quantite)
                 }))
             },
         ],
