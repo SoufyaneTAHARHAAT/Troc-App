@@ -18,11 +18,6 @@
         <input type="text" id="idDestinataire" name="idDestinataire" pattern="^g\d\.\d+$" required>
         <br><br>
 
-        <!-- ID Fichier -->
-        <label for="idFichier">ID Fichier:</label>
-        <input type="text" id="idFichier" name="idFichier" pattern="^g\d\.\d+$" required>
-        <br><br>
-
         <!-- Date Fichier -->
         <label for="dateFichier">Date du fichier (jj-mm-aaaa):</label>
         <input type="text" id="dateFichier" name="dateFichier" pattern="^\d{2}-\d{2}-\d{4}$" required>
@@ -42,30 +37,31 @@
             <br>
 
             <!-- Liste d'Objets -->
-            <fieldset>
+            <fieldset id="listeObjets">
                 <legend>Liste des objets</legend>
 
                 <!-- Objet 1 -->
-                <label for="titre1">Titre de l'objet:</label>
-                <input type="text" id="titre1" name="messages[0][listeObjet][0][titre]" required>
-                <br><br>
+                <div class="objet">
+                    <label for="titre1">Titre de l'objet:</label>
+                    <input type="text" name="messages[0][listeObjet][0][titre]" required>
+                    <br><br>
 
-                <label for="description1">Description de l'objet:</label>
-                <textarea id="description1" name="messages[0][listeObjet][0][description]"></textarea>
-                <br><br>
+                    <label for="description1">Description de l'objet:</label>
+                    <textarea name="messages[0][listeObjet][0][description]"></textarea>
+                    <br><br>
 
-                <label for="qualite1">Qualité (0-5):</label>
-                <input type="number" id="qualite1" name="messages[0][listeObjet][0][qualite]" min="0" max="5" required>
-                <br><br>
+                    <label for="qualite1">Qualité (0-5):</label>
+                    <input type="number" name="messages[0][listeObjet][0][qualite]" min="0" max="5" required>
+                    <br><br>
 
-                <label for="quantite1">Quantité:</label>
-                <input type="number" id="quantite1" name="messages[0][listeObjet][0][quantite]" min="1" required>
-                <br><br>
-
-                <!-- Ajouter plus d'objets si nécessaire -->
-                <!-- Vous pouvez répéter cette section pour plusieurs objets -->
+                    <label for="quantite1">Quantité:</label>
+                    <input type="number" name="messages[0][listeObjet][0][quantite]" min="1" required>
+                    <br><br>
+                </div>
 
             </fieldset>
+
+            <button type="button" id="ajouterObjet">Ajouter un objet</button>
         </fieldset>
         
         <br><br>

@@ -7,6 +7,7 @@ import { fileURLToPath } from "url";
 import Ajv from 'ajv';
 import schemaAuto from './msg_autorisation_schema.js';
 import schemaTroc from './msg_troc_schema.js';
+import { v4 as uuidv4 } from 'uuid';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 
@@ -134,7 +135,6 @@ app.get("/autorisation", (req, res) => {
 app.post("/autorisation", (req, res) => {
     const jsonData = req.body;
 
-    // Read the counter file
     fs.readFile('./counterAut.json', 'utf8', (err, data) => {
         if (err) {
             console.error('Erreur lors de la lecture du fichier du compteur:', err);
@@ -142,21 +142,22 @@ app.post("/autorisation", (req, res) => {
         }
 
         let counterData = JSON.parse(data);
-        counterData.lastUsed += 1; // Increment the last used number
+        counterData.lastUsed += 1;
 
-        const idTroqueur = `g3.${counterData.lastUsed}`; // Generate the new idTroqueur
+        const idTroqueur = `g3.${counterData.lastUsed}`;
+        const idMessage = uuidv4(); // Génère un idMessage unique avec uuid
 
-        // Create the updated JSON structure
         const updatedJsonData = {
             idTroqueur: idTroqueur,
             idDestinataire: jsonData.idDestinataire,
-            idFichier: jsonData.idFichier,
+            //idFichier: jsonData.idFichier,
+            idFichier: idTroqueur,
             dateFichier: jsonData.dateFichier,
             checksum: jsonData.checksum,
             MessageDemandeAutorisation: {
-                statutAutorisation: jsonData.statutAutorisation, // value is "demande" by default
+                statutAutorisation: jsonData.statutAutorisation,
                 date: jsonData.dateDemande,
-                idMessage: jsonData.idMessage,
+                idMessage: idMessage,
                 coordonnees: {
                     mail: jsonData.mail,
                     telephone: jsonData.telephone,
@@ -165,19 +166,19 @@ app.post("/autorisation", (req, res) => {
             }
         };
 
-        const filePath = `./msg_autorisation/${jsonData.idFichier}.json`;
+        const filePath = `./msg_autorisation/autor_${idTroqueur}_${jsonData.idDestinataire}_${jsonData.dateFichier}.json`;
 
         fs.writeFile(filePath, JSON.stringify(updatedJsonData, null, 2), (err) => {
             if (err) {
-                console.error('Erreur lors de l\'écriture du fichier JSON:', err);
-                return res.status(500).send('Erreur lors de la sauvegarde des données');
+                console.error("Erreur lors de l'écriture du fichier JSON:", err);
+                return res.status(500).send("Erreur lors de la sauvegarde des données");
             }
-            console.log('Données sauvegardées dans', filePath);
+            console.log("Données sauvegardées dans", filePath);
 
             fs.writeFile('./counterAut.json', JSON.stringify(counterData, null, 2), (err) => {
                 if (err) {
-                    console.error('Erreur lors de l\'écriture du fichier du compteur:', err);
-                    return res.status(500).send('Erreur lors de la mise à jour du compteur');
+                    console.error("Erreur lors de l'écriture du fichier du compteur:", err);
+                    return res.status(500).send("Erreur lors de la mise à jour du compteur");
                 }
 
                 res.redirect("/accueil");
@@ -185,7 +186,6 @@ app.post("/autorisation", (req, res) => {
         });
     });
 });
-
 
 app.post("/submit", (req, res) => {
     // Extraire les données du formulaire
@@ -205,7 +205,8 @@ app.post("/submit", (req, res) => {
             checksum: jsonData.checksum,
             idTroqueur: idTroqueur,
             idDestinataire: jsonData.idDestinataire,
-            idFichier: jsonData.idFichier,
+            //idFichier: jsonData.idFichier,
+            idFichier: idTroqueur,
             dateFichier: jsonData.dateFichier,
             messages: [
                 {
@@ -222,7 +223,7 @@ app.post("/submit", (req, res) => {
         };
 
     // Définir le chemin et le nom du fichier JSON
-    const filePath = `./msg_troc/${jsonData.idFichier}.json`;
+    const filePath = `./msg_troc/troc_${idTroqueur}_${jsonData.idDestinataire}_${jsonData.dateFichier}.json`;
 
     // Écrire les données formatées dans le fichier JSON
     fs.writeFile(filePath, JSON.stringify(formattedData, null, 2), (err) => {
@@ -231,8 +232,14 @@ app.post("/submit", (req, res) => {
             return res.status(500).send('Erreur lors de la sauvegarde des données');
         }
 
-        console.log('Données sauvegardées dans data.json');
-        res.redirect("/accueil");
+        fs.writeFile('./counterProp.json', JSON.stringify(counterData, null, 2), (err) => {
+            if (err) {
+                console.error("Erreur lors de l'écriture du fichier du compteur:", err);
+                return res.status(500).send("Erreur lors de la mise à jour du compteur");
+            }
+
+            res.redirect("/accueil");
+        });
     });
     });
 });
@@ -240,12 +247,22 @@ app.post("/submit", (req, res) => {
 
 app.post('/submit-proposal', (req, res) => {
     const jsonData = req.body;
+    fs.readFile('./counterProp.json', 'utf8', (err, data) => {
+        if (err) {
+            console.error('Erreur lors de la lecture du fichier du compteur:', err);
+            return res.status(500).send('Erreur lors de la récupération du compteur');
+        }
+
+        let counterData = JSON.parse(data);
+        counterData.lastUsed += 1; // Increment the last used number
+
+        const idTroqueur = `g3.${counterData.lastUsed}`; // Generate the new idTroqueur
 
     const formattedData = {
         checksum: jsonData.checksum,
-        idTroqueur: jsonData.idTroqueur,
+        idTroqueur: idTroqueur,
         idDestinataire: jsonData.idDestinataire,
-        idFichier: jsonData.idFichier,
+        idFichier: idTroqueur,
         dateFichier: jsonData.dateFichier,
         messages: [
             {
@@ -259,16 +276,25 @@ app.post('/submit-proposal', (req, res) => {
                 }))
             },
         ],
-    };
+    }
+    
 
-    const filePath = path.join(__dirname, `msg_troc/${req.body.idFichier}.json`);
+    const filePath = path.join(__dirname, `msg_troc/troc_${idTroqueur}_${jsonData.idDestinataire}_${jsonData.dateFichier}.json`);
 
     fs.writeFile(filePath, JSON.stringify(formattedData, null, 2), (err) => {
         if (err) {
             console.error('Error writing file', err);
             return res.status(500).send('Internal Server Error');
         }
-        res.send('File generated successfully');
+        fs.writeFile('./counterProp.json', JSON.stringify(counterData, null, 2), (err) => {
+            if (err) {
+                console.error("Erreur lors de l'écriture du fichier du compteur:", err);
+                return res.status(500).send("Erreur lors de la mise à jour du compteur");
+            }
+
+            res.redirect("/accueil");
+        });
+    })
     });
 });
 

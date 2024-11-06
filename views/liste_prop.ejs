@@ -20,31 +20,32 @@
 
     <div id="proposeForm" class="hidden">
         <form id="proposeFormContent" action="/submit-proposal" method="post">
-            <!-- ID Fichier (new one) -->
-            <label for="newIdFichier">ID Fichier:</label>
-            <input type="text" id="newIdFichier" name="idFichier" pattern="^g\d\.\d+$" required>
-            <br><br>
-        
-            <!-- Liste d'Objets for the proposal -->
-            <fieldset>
+            <fieldset id="objectFieldsContainer">
                 <legend>Liste des objets</legend>
-                <label for="newTitre1">Titre de l'objet:</label>
-                <input type="text" id="newTitre1" name="listeObjet[0][titre]" required>
-                <br><br>
-                
-                <label for="newDescription1">Description de l'objet:</label>
-                <textarea id="newDescription1" name="listeObjet[0][description]"></textarea>
-                <br><br>
-                
-                <label for="newQualite1">Qualité (0-5):</label>
-                <input type="number" id="newQualite1" name="listeObjet[0][qualite]" min="0" max="5" required>
-                <br><br>
-                
-                <label for="newQuantite1">Quantité:</label>
-                <input type="number" id="newQuantite1" name="listeObjet[0][quantite]" min="1" required>
-                <br><br>
+                <!-- Template for an Object Entry -->
+                <div class="object-entry">
+                    <label for="newTitre1">Titre de l'objet:</label>
+                    <input type="text" name="listeObjet[0][titre]" required>
+                    <br><br>
+                    
+                    <label for="newDescription1">Description de l'objet:</label>
+                    <textarea name="listeObjet[0][description]"></textarea>
+                    <br><br>
+                    
+                    <label for="newQualite1">Qualité (0-5):</label>
+                    <input type="number" name="listeObjet[0][qualite]" min="0" max="5" required>
+                    <br><br>
+                    
+                    <label for="newQuantite1">Quantité:</label>
+                    <input type="number" name="listeObjet[0][quantite]" min="1" required>
+                    <br><br>
+                </div>
             </fieldset>
-            <input type="hidden" id="newDateMessage" name="dateMessage" pattern="^\d{2}-\d{2}-\d{4}$" required>
+            
+            <button type="button" onclick="addNewObject()">Ajouter un objet</button>
+            
+            <!-- Champs cachés -->
+            <input type="hidden" id="newDateMessage" name="dateMessage" required>
             <input type="hidden" id="chosenStatut" name="statut" value="">
             <input type="hidden" id="newIdTroqueur" name="idTroqueur" value="">
             <input type="hidden" id="newIdDestinataire" name="idDestinataire" value="">
@@ -95,7 +96,7 @@
                         <p>Date Message: <%= prop.messages[0].dateMessage %></p>
                         <p>Statut: <%= prop.messages[0].statut %></p>
                         <% prop.messages[0].listeObjet.forEach(obj => { %> 
-                            <p>Objet: <%= obj.titre %></p>
+                            <strong><p>Objet: <%= obj.titre %></p></strong>
                             <p>Description: <%= obj.description %></p>
                             <p>Qualité: <%= obj.qualite %></p>
                             <p>Quantité: <%= obj.quantite %></p>
