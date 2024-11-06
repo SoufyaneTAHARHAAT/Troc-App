@@ -181,7 +181,7 @@ app.post("/autorisation", (req, res) => {
                     return res.status(500).send("Erreur lors de la mise à jour du compteur");
                 }
 
-                res.redirect("/accueil");
+                res.redirect("/demandes");
             });
         });
     });
@@ -238,7 +238,7 @@ app.post("/submit", (req, res) => {
                 return res.status(500).send("Erreur lors de la mise à jour du compteur");
             }
 
-            res.redirect("/accueil");
+            res.redirect("/propositions");
         });
     });
     });
@@ -292,7 +292,7 @@ app.post('/submit-proposal', (req, res) => {
                 return res.status(500).send("Erreur lors de la mise à jour du compteur");
             }
 
-            res.redirect("/accueil");
+            res.redirect("/propositions");
         });
     })
     });
