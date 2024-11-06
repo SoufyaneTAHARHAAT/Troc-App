@@ -18,6 +18,7 @@ window.onload = function() {
         const nouvelObjet = document.createElement('div');
         nouvelObjet.classList.add('objet');
         nouvelObjet.innerHTML = `
+            <hr style="border: 1px solid green; width: 100%; margin: 10px auto;">
             <label for="titre${objetCount + 1}">Titre de l'objet:</label>
             <input type="text" name="messages[0][listeObjet][${objetCount}][titre]" required>
             <br><br>

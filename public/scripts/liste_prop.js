@@ -92,6 +92,7 @@ function addNewObject() {
     const newObject = document.createElement('div');
     newObject.classList.add('object-entry');
     newObject.innerHTML = `
+        <hr style="border: 1px solid green; width: 100%; margin: 10px auto;">
         <label for="newTitre${objectCount + 1}">Titre de l'objet:</label>
         <input type="text" name="listeObjet[${objectCount}][titre]" required>
         <br><br>
