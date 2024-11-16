@@ -1,0 +1,21 @@
+{
+  "checksum": "check4",
+  "idTroqueur": "g3.11",
+  "idDestinataire": "g2.6",
+  "idFichier": "g3.11",
+  "dateFichier": "16-11-2024",
+  "messages": [
+    {
+      "dateMessage": "16-11-2024",
+      "statut": "propose",
+      "listeObjet": [
+        {
+          "titre": "Micro-onde",
+          "description": "nouveau modele",
+          "qualite": 4,
+          "quantite": 1
+        }
+      ]
+    }
+  ]
+}

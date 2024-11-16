@@ -1,0 +1,21 @@
+{
+  "checksum": "check3",
+  "idTroqueur": "g3.10",
+  "idDestinataire": "g2.3",
+  "idFichier": "g3.10",
+  "dateFichier": "16-11-2024",
+  "messages": [
+    {
+      "dateMessage": "16-11-2024",
+      "statut": "propose",
+      "listeObjet": [
+        {
+          "titre": "table",
+          "description": "quatre pieds",
+          "qualite": 4,
+          "quantite": 2
+        }
+      ]
+    }
+  ]
+}

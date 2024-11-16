@@ -1,0 +1,27 @@
+{
+  "checksum": "check1",
+  "idTroqueur": "g4.2",
+  "idDestinataire": "g3.1",
+  "idFichier": "g4.2",
+  "dateFichier": "16-11-2024",
+  "messages": [
+    {
+      "dateMessage": "16-11-2024",
+      "statut": "propose",
+      "listeObjet": [
+        {
+          "titre": "Vélo",
+          "description": "Vélo tout terrain",
+          "qualite": 3,
+          "quantite": 1
+        },
+        {
+          "titre": "Souris",
+          "description": "Gamer",
+          "qualite": 4,
+          "quantite": 2
+        }
+      ]
+    }
+  ]
+}

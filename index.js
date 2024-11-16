@@ -167,7 +167,7 @@ app.post("/autorisation", (req, res) => {
         };
 
         const filePath = `./msg_autorisation/autor_${idTroqueur}_${jsonData.idDestinataire}_${jsonData.dateFichier}.json`;
-
+        
         fs.writeFile(filePath, JSON.stringify(updatedJsonData, null, 2), (err) => {
             if (err) {
                 console.error("Erreur lors de l'écriture du fichier JSON:", err);
@@ -297,6 +297,45 @@ app.post('/submit-proposal', (req, res) => {
     })
     });
 });
+
+app.get("/generer-fichiers", (req, res) => {
+    const dirPath = path.join(__dirname, 'msg_troc');
+    const groupes = ['g1', 'g2', 'g4', 'g5']; // Les critères de recherche
+
+    groupes.forEach((groupe) => {
+        const outputFilePath = path.join(__dirname, 'output', `fichiers_${groupe}.js`);
+        let contenu = '';
+
+        // Lire le dossier et rechercher les fichiers commençant par 'troc_g3'
+        fs.readdir(dirPath, (err, files) => {
+            if (err) {
+                console.error(`Erreur lors de la lecture du dossier msg_troc pour ${groupe}:`, err);
+                return res.status(500).send(`Erreur lors de la lecture du dossier pour ${groupe}`);
+            }
+
+            files.forEach(file => {
+                if (file.startsWith('troc_g3') && file.includes(groupe)) {
+                    const filePath = path.join(dirPath, file);
+                    const data = fs.readFileSync(filePath, 'utf8'); // Lecture du contenu du fichier
+                    contenu += `\n// Contenu du fichier: ${file}\n` + data + '\n';
+                }
+            });
+
+            // Écrire le contenu agrégé dans le fichier de sortie
+            fs.writeFile(outputFilePath, contenu, (err) => {
+                if (err) {
+                    console.error(`Erreur lors de la génération du fichier pour ${groupe}:`, err);
+                } else {
+                    console.log(`Fichier généré et stocké dans ${outputFilePath}`);
+                }
+            });
+        });
+    });
+
+    res.send('Les fichiers commençant par "troc_g3" ont été générés avec succès pour chaque groupe.');
+});
+
+
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

@@ -1,0 +1,21 @@
+{
+  "checksum": "check2",
+  "idTroqueur": "g3.9",
+  "idDestinataire": "g1.4",
+  "idFichier": "g3.9",
+  "dateFichier": "16-11-2024",
+  "messages": [
+    {
+      "dateMessage": "16-11-2024",
+      "statut": "propose",
+      "listeObjet": [
+        {
+          "titre": "Book",
+          "description": "Harry potter",
+          "qualite": 5,
+          "quantite": 3
+        }
+      ]
+    }
+  ]
+}
