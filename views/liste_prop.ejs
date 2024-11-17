@@ -58,63 +58,64 @@
     </div>
 
     <div class="container">
-        <h1>Liste de propositions</h1>
-        <% if(propositions.length === 0) { %> 
-            <h2>Vous n'avez aucune proposition</h2>
-        <% } else { %> 
-            <% propositions.forEach((prop, index) => { %> 
-                <div class="proposition" 
-                     data-id-troqueur="<%= prop.idTroqueur %>" 
-                     data-id-destinataire="<%= prop.idDestinataire %>" 
-                     data-checksum="<%= prop.checksum %>" 
-                     data-date-fichier="<%= prop.dateFichier %>"
-                     data-index="<%= index %>">
-                     
-                    <% if (prop.error) { %>
-                        <h2 style="color: red;">Erreur : <%= prop.error %></h2>
-                        <p>Fichier : <%= prop.fileName %></p> <!-- Affiche le nom du fichier non valide -->
-                        <% if (prop.details) { %>
-                            <p>Détails de l'erreur :</p>
-                            <ul>
-                                <% prop.details.forEach(err => { %>
-                                    <li><%= err.message %></li>
-                                <% }); %>
-                            </ul>
-                        <% } %>
-                    <% } else { %>
-                        <% if (prop.idTroqueur.includes('g3')) { %> 
-                            <h2 id="proposition-title-<%= index %>">Message envoyé</h2>
-                        <% } else { %> 
-                            <h2 id="proposition-title-<%= index %>">Message reçu</h2>
-                        <% } %>
-                        
-                        <p>Checksum: <%= prop.checksum %></p>
-                        <p>ID Troqueur: <%= prop.idTroqueur %></p>
-                        <p>ID Destinataire: <%= prop.idDestinataire %></p>
-                        <p>ID Fichier: <%= prop.idFichier %></p>
-                        <p>Date Fichier: <%= prop.dateFichier %></p>
-                        <p>Date Message: <%= prop.messages[0].dateMessage %></p>
-                        <p>Statut: <%= prop.messages[0].statut %></p>
-                        <% prop.messages[0].listeObjet.forEach(obj => { %> 
+    <h1>Liste de propositions</h1>
+    <% if (propositions.length === 0) { %>
+        <h2>Vous n'avez aucune proposition</h2>
+    <% } else { %>
+        <% propositions.forEach((prop, index) => { %>
+            <div class="card" 
+                 data-id-troqueur="<%= prop.idTroqueur %>" 
+                 data-id-destinataire="<%= prop.idDestinataire %>" 
+                 data-checksum="<%= prop.checksum %>" 
+                 data-date-fichier="<%= prop.dateFichier %>"
+                 data-index="<%= index %>">
+                 
+                <% if (prop.error) { %>
+                    <h2 style="color: red;">Erreur : <%= prop.error %></h2>
+                    <p>Fichier : <%= prop.fileName %></p>
+                    <% if (prop.details) { %>
+                        <p>Détails de l'erreur :</p>
+                        <ul>
+                            <% prop.details.forEach(err => { %>
+                                <li><%= err.message %></li>
+                            <% }); %>
+                        </ul>
+                    <% } %>
+                <% } else { %>
+                    <h2 id="proposition-title-<%= index %>">
+                        <%= prop.idTroqueur.includes('g3') ? 'Message envoyé' : 'Message reçu' %>
+                    </h2>
+
+                    <p><strong>Checksum:</strong> <%= prop.checksum %></p>
+                    <p><strong>ID Troqueur:</strong> <%= prop.idTroqueur %></p>
+                    <p><strong>ID Destinataire:</strong> <%= prop.idDestinataire %></p>
+                    <p><strong>ID Fichier:</strong> <%= prop.idFichier %></p>
+                    <p><strong>Date Fichier:</strong> <%= prop.dateFichier %></p>
+                    <p><strong>Date Message:</strong> <%= prop.messages[0].dateMessage %></p>
+                    <p><strong>Statut:</strong> <%= prop.messages[0].statut %></p>
+
+                    <% prop.messages[0].listeObjet.forEach(obj => { %>
+                        <div class="object-details">
                             <strong><p>Objet: <%= obj.titre %></p></strong>
                             <p>Description: <%= obj.description %></p>
                             <p>Qualité: <%= obj.qualite %></p>
                             <p>Quantité: <%= obj.quantite %></p>
-                        <% }) %>
-                        
-                        <% if (!prop.idTroqueur.includes('g3')) { %> 
-                            <select id="statut-<%= index %>" name="statut" onchange="updatePropositionStatus(<%= index %>)" required>
-                                <option value="accepte">Accepter</option>
-                                <option value="valide">Valider</option>
-                                <option value="annule">Annuler</option>
-                                <option value="refuse">Refuser</option>
-                            </select>
-                        <% } %>
+                        </div>
+                    <% }) %>
+
+                    <% if (!prop.idTroqueur.includes('g3')) { %>
+                        <select id="statut-<%= index %>" name="statut" onchange="updatePropositionStatus(<%= index %>)" required>
+                            <option value="accepte">Accepter</option>
+                            <option value="valide">Valider</option>
+                            <option value="annule">Annuler</option>
+                            <option value="refuse">Refuser</option>
+                        </select>
                     <% } %>
-                </div>
-            <% }) %>            
-        <% } %>
-    </div>
+                <% } %>
+            </div>
+        <% }) %>
+    <% } %>
+</div>
     
     <%- include("../layouts/footer.ejs") %>
 

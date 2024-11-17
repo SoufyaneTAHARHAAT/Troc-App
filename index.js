@@ -19,6 +19,61 @@ const ajv = new Ajv();
 const validateAuto = ajv.compile(schemaAuto);
 const validateTroc = ajv.compile(schemaTroc);
 
+function genererFichiersParMessagePourTous() {
+    const inputDir = path.join(__dirname, 'msg_recus');
+    const outputDir = path.join(__dirname, 'msg_troc');
+
+    // Vérifier l'existence du dossier de destination, sinon le créer
+    if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir);
+    }
+
+    // Lire le dossier 'msg_reçus'
+    fs.readdir(inputDir, (err, files) => {
+        if (err) {
+            console.error('Erreur lors de la lecture du dossier msg_reçus:', err);
+            return;
+        }
+
+        // Parcourir chaque fichier du dossier
+        files.forEach((file) => {
+            const filePath = path.join(inputDir, file);
+
+            // Vérifier si le fichier est un fichier JSON
+            if (file.endsWith('.json')) {
+                try {
+                    // Lire le contenu du fichier JSON
+                    const jsonData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+                    // Parcourir les messages et générer un fichier pour chacun
+                    jsonData.messages.forEach((message, index) => {
+                        const outputData = {
+                            checksum: jsonData.checksum,
+                            idTroqueur: jsonData.idTroqueur,
+                            idDestinataire: jsonData.idDestinataire,
+                            idFichier: jsonData.idFichier,
+                            dateFichier: jsonData.dateFichier,
+                            messages: [message] // Chaque fichier contient un seul message
+                        };
+
+                        // Générer le nom du fichier selon la logique spécifiée
+                        const outputFileName = `troc_${jsonData.idTroqueur}_${jsonData.idDestinataire}_${jsonData.dateFichier}_msg${index + 1}.json`;
+                        const outputFilePath = path.join(outputDir, outputFileName);
+
+                        // Écrire le contenu dans le fichier de sortie
+                        fs.writeFileSync(outputFilePath, JSON.stringify(outputData, null, 2));
+                        console.log(`Fichier généré : ${outputFilePath}`);
+                    });
+                } catch (parseError) {
+                    console.error(`Erreur lors du traitement du fichier ${file}:`, parseError);
+                }
+            }
+        });
+    });
+
+    console.log('Tous les fichiers ont été traités avec succès.');
+}
+
 
 app.get("/", (req, res) => {
     res.redirect("/accueil");
@@ -78,6 +133,8 @@ app.get("/demandes", (req, res) => {
 });
 
 app.get("/propositions", (req, res) => {
+    genererFichiersParMessagePourTous();
+
     const dirPath = path.join(__dirname, 'msg_troc');
     fs.readdir(dirPath, (err, files) => {
         if (err) {
