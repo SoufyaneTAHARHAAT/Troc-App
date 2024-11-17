@@ -12,3 +12,22 @@ window.onload = function() {
     document.getElementById('dateFichier').value = formattedDate;
     document.getElementById('dateDemande').value = formattedDate;
 };
+
+// Initialisation des compteurs pour chaque groupe
+const groupCounters = {
+    g1: 1,
+    g2: 1,
+    g4: 1,
+    g5: 1
+};
+
+document.getElementById('groupSelect').addEventListener('change', function() {
+    const group = this.value;
+    if (group) {
+        // Utiliser et incrémenter le compteur pour le groupe sélectionné
+        const currentCount = groupCounters[group]++;
+        document.getElementById('idDestinataire').value = `${group}.${currentCount}`;
+    } else {
+        document.getElementById('idDestinataire').value = '';
+    }
+});

@@ -303,8 +303,15 @@ app.get("/generer-fichiers", (req, res) => {
     const groupes = ['g1', 'g2', 'g4', 'g5']; // Les critères de recherche
 
     groupes.forEach((groupe) => {
-        const outputFilePath = path.join(__dirname, 'output', `fichiers_${groupe}.js`);
-        let contenu = '';
+        const outputFilePath = path.join(__dirname, 'output', `fichiers_${groupe}.json`);
+        let contenu = {
+            idTroqueur: '',
+            idDestinataire: '',
+            idFichier: '',
+            dateFichier: '',
+            messages: [],
+            checksum: ''
+        };
 
         // Lire le dossier et rechercher les fichiers commençant par 'troc_g3'
         fs.readdir(dirPath, (err, files) => {
@@ -316,13 +323,26 @@ app.get("/generer-fichiers", (req, res) => {
             files.forEach(file => {
                 if (file.startsWith('troc_g3') && file.includes(groupe)) {
                     const filePath = path.join(dirPath, file);
-                    const data = fs.readFileSync(filePath, 'utf8'); // Lecture du contenu du fichier
-                    contenu += `\n// Contenu du fichier: ${file}\n` + data + '\n';
+                    const data = JSON.parse(fs.readFileSync(filePath, 'utf8')); // Lecture et parse du contenu JSON
+
+                    // Ajouter les détails du fichier au contenu agrégé
+                    if (!contenu.idTroqueur) contenu.idTroqueur = data.idTroqueur;
+                    if (!contenu.idDestinataire) contenu.idDestinataire = data.idDestinataire;
+                    if (!contenu.idFichier) contenu.idFichier = data.idFichier;
+                    if (!contenu.dateFichier) contenu.dateFichier = data.dateFichier;
+
+                    // Ajouter le checksum du premier message seulement
+                    if (!contenu.checksum && data.checksum) {
+                        contenu.checksum = data.checksum;
+                    }
+
+                    // Ajouter les messages au tableau
+                    contenu.messages.push(...data.messages);
                 }
             });
 
-            // Écrire le contenu agrégé dans le fichier de sortie
-            fs.writeFile(outputFilePath, contenu, (err) => {
+            // Écrire l'objet JSON final dans le fichier de sortie
+            fs.writeFile(outputFilePath, JSON.stringify(contenu, null, 2), (err) => {
                 if (err) {
                     console.error(`Erreur lors de la génération du fichier pour ${groupe}:`, err);
                 } else {

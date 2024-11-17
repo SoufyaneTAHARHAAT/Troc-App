@@ -11,9 +11,16 @@
     <form action="/autorisation" method="post">
         
 
-        <label for="idDestinataire">ID Destinataire (format: gX.X):</label>
-        <input type="text" id="idDestinataire" name="idDestinataire" pattern="^g\d\.\d+$" required>
-        <br>
+        <label for="idDestinataire">ID Destinataire:</label>
+<select id="groupSelect" name="groupSelect" required>
+    <option value="">Sélectionnez un groupe</option>
+    <option value="g1">g1</option>
+    <option value="g2">g2</option>
+    <option value="g4">g4</option>
+    <option value="g5">g5</option>
+</select>
+<input type="text" id="idDestinataire" name="idDestinataire" readonly required>
+<br>
 
         <label for="dateFichier">Date Fichier (format: jj-mm-aaaa):</label>
         <input type="text" id="dateFichier" name="dateFichier" pattern="^\d{2}-\d{2}-\d{4}$" required>
