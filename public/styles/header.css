@@ -1,53 +1,66 @@
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #e8f5ff; /* Couleur harmonisée avec les autres pages */
+    color: #333;
+}
 
-        nav {
-            background-color: #4CAF50; /* Green background */
-            padding: 15px; /* Padding around the nav */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-        }
+nav {
+    background-color: #007bb5; /* Bleu harmonisé */
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre subtile */
+    border-radius: 10px; /* Coins arrondis */
+}
 
-        nav ul {
-            list-style-type: none; /* Remove bullet points */
-            padding: 0; /* Remove default padding */
-            margin: 0; /* Remove default margin */
-            display: flex; /* Use flexbox for horizontal layout */
-            justify-content: space-around; /* Evenly space items */
-        }
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center; /* Aligner verticalement les éléments */
+}
 
-        nav ul li {
-            flex: 1; /* Make items flexible */
-            text-align: center; /* Center align text */
-        }
+nav ul li {
+    flex: 1;
+    text-align: center;
+}
 
-        nav ul li a {
-            text-decoration: none; /* Remove underline from links */
-            color: white; /* White text color */
-            padding: 10px; /* Padding around links */
-            display: block; /* Make links block elements */
-            transition: background-color 0.3s; /* Smooth transition for hover effect */
-        }
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    padding: 12px 20px; /* Padding plus généreux */
+    display: block;
+    border-radius: 5px; /* Coins arrondis pour les liens */
+    font-size: 1.1em; /* Texte légèrement agrandi */
+    transition: background-color 0.3s, transform 0.2s; /* Ajout d'une transition fluide */
+}
 
-        nav ul li a:hover, header:hover {
-            background-color: #45a049; /* Darker green on hover */
-        }
-        header {
-            text-align: center;
-            border: 5px solid green;
-            /* border-color: #45a049; */
-            border-radius: 10px;
-            font-size: 2.5em;
-            background-color: green;
-            width: 30%;
-            margin-left: 35%;
-            margin-top: 10px;
-        }
-        header a {
-            text-decoration: none;
-            color: aliceblue;
-        }
+nav ul li a:hover {
+    background-color: #005f87; /* Bleu plus foncé au survol */
+    transform: scale(1.05); /* Légère augmentation de taille */
+}
+
+header {
+    text-align: center;
+    border: 3px solid #007bb5; /* Bordure harmonisée */
+    border-radius: 15px;
+    font-size: 2.5em;
+    background-color: #007bb5; /* Couleur bleue pour le header */
+    width: 40%; /* Largeur augmentée pour une meilleure visibilité */
+    margin: 20px auto; /* Centrer horizontalement et espacer verticalement */
+    color: white; /* Texte en blanc */
+    padding: 15px; /* Espacement interne */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Effet d'ombre */
+}
+
+header a {
+    text-decoration: none;
+    color: white; /* Couleur harmonisée avec le fond */
+    font-weight: bold; /* Mettre le texte en gras */
+}
+
+header a:hover {
+    text-decoration: underline; /* Ajout d'une indication visuelle au survol */
+}

@@ -1,30 +1,39 @@
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh; /* Minimum height of the body covers the full view height */
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-        }
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Assure que le contenu remplit au moins la hauteur de la fenêtre */
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #e8f5ff; /* Harmonisé avec le reste des pages */
+    color: #333;
+}
 
-        footer {
-            background-color: #4CAF50; /* Same green as the header */
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
-        }
+footer {
+    background-color: #007bb5; /* Bleu utilisé dans le reste de l'application */
+    color: white;
+    text-align: center;
+    padding: 15px 0; /* Augmentation du padding pour plus de confort visuel */
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2); /* Ombre subtile */
+    border-top: 3px solid #005f87; /* Ajout d'une bordure supérieure pour séparer visuellement le pied de page */
+}
 
-        footer a {
-            color: white;
-            text-decoration: underline;
-            transition: color 0.3s;
-        }
+footer a {
+    color: #ffffff; /* Lien en blanc pour contraste avec le fond */
+    text-decoration: none; /* Suppression du soulignement par défaut */
+    font-weight: bold; /* Texte mis en évidence */
+    transition: color 0.3s, transform 0.2s; /* Transition fluide pour les effets */
+}
 
-        footer a:hover {
-            color: #45a049; /* Slightly darker green on hover */
-        }
-        .content {
-            flex: 1;
-        }
+footer a:hover {
+    color: #ffdd57; /* Jaune pour attirer l'attention au survol */
+    transform: scale(1.1); /* Légère mise en avant au survol */
+}
+
+.content {
+    flex: 1; /* Permet au contenu principal d'occuper tout l'espace disponible */
+    padding: 20px; /* Ajout de marges internes pour un confort visuel */
+    background-color: #ffffff; /* Fond blanc pour contraste avec le corps */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Effet d'ombre sur le contenu */
+    border-radius: 10px; /* Coins arrondis */
+    margin: 20px; /* Espacement externe pour éviter que le contenu touche les bords */
+}

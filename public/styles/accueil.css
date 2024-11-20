@@ -1,5 +1,58 @@
+.hero-section {
+  text-align: center;
+  padding: 20px;
+}
 
-main {
-      flex: 1; /* Takes all available space, pushing the footer to the bottom */
-      padding: 20px;
-    }
+.hero-section h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.hero-section h1 span {
+  color: #60A5FA; /* Bleu clair pour le contraste */
+}
+
+.hero-section p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  color: #a1a1a3; /* Gris clair pour un texte secondaire lisible */
+}
+
+.hero-image {
+  margin: 20px auto;
+  max-width: 600px; /* Limite la largeur de l'image */
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.hero-image img {
+  width: 100%; /* Image adaptative */
+  height: auto;
+  display: block;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.cta-button {
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  color: white;
+  background-color: #60A5FA; /* Bleu clair */
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.cta-button:hover {
+  background-color: #3B82F6; /* Bleu plus foncé au survol */
+  transform: scale(1.1);
+}

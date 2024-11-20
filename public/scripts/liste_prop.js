@@ -14,22 +14,22 @@ function updatePropositionStatus(index) {
     if (selectElement && titleElement && modal && modalOui && modalNon) {
         switch (selectElement.value) {
             case 'accepte':
-                titleElement.textContent = 'Demande acceptée';
+                titleElement.textContent = 'Proposition acceptée';
                 titleElement.className = 'accepted';
                 modal.style.display = 'block';
                 break;
             case 'valide':
-                titleElement.textContent = 'Demande validée';
+                titleElement.textContent = 'Proposition validée';
                 titleElement.className = 'validated';
                 modal.style.display = 'block';
                 break;
             case 'annule':
-                titleElement.textContent = 'Demande annulée';
+                titleElement.textContent = 'Proposition annulée';
                 titleElement.className = 'canceled';
                 modal.style.display = 'block';
                 break;
             case 'refuse':
-                titleElement.textContent = 'Demande refusée';
+                titleElement.textContent = 'Proposition refusée';
                 titleElement.className = 'rejected';
                 modal.style.display = 'block';
                 break;
@@ -41,7 +41,8 @@ function updatePropositionStatus(index) {
 
         modalOui.addEventListener('click', function() {
             modal.style.display = 'none';
-            document.getElementById('chosenStatut').value = selectElement.value;
+            //document.getElementById('chosenStatut').value = selectElement.value;
+            document.getElementById('chosenStatut').value = 'propose';
             proposeForm.classList.remove('hidden');
             
             // Pre-fill the hidden fields with existing data

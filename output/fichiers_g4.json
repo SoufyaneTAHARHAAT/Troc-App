@@ -15,6 +15,18 @@
           "quantite": 3
         }
       ]
+    },
+    {
+      "dateMessage": "18-11-2024",
+      "statut": "propose",
+      "listeObjet": [
+        {
+          "titre": "Chair",
+          "description": "lether",
+          "qualite": 2,
+          "quantite": 2
+        }
+      ]
     }
   ],
   "checksum": "check1"

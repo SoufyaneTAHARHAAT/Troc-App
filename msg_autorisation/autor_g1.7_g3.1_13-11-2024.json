@@ -1,0 +1,17 @@
+{
+  "idTroqueur": "g1.7",
+  "idDestinataire": "g3.1",
+  "idFichier": "g1.7",
+  "dateFichier": "13-11-2024",
+  "checksum": "check2",
+  "MessageDemandeAutorisation": {
+    "statutAutorisation": "demande",
+    "date": "13-11-2024",
+    "idMessage": "a1970db6-136e-4813-8c15-db4e3e96ef9d",
+    "coordonnees": {
+      "mail": "test22@gmail.com",
+      "telephone": "0123456789",
+      "nomAuteur": "Soufyane"
+    }
+  }
+}

@@ -5,26 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles/accueil.css">
     <title>Troc App</title>
-
 </head>
 <body>
     <%- include("../layouts/header.ejs") %>
     <main>
         <!-- Contenu principal de la page -->
-        <h1>Bienvenue sur l'Application de Troc</h1>
-        <p>Ce site vous permet de proposer et de demander des trocs en toute simplicité.</p>
+        <section class="hero-section">
+            <h1>Bienvenue sur <span>l'Application de Troc</span></h1>
+            <p>Ce site vous permet de proposer et de demander des trocs en toute simplicité.</p>
+            <div class="hero-image">
+                <img src="troc.jpg" alt="Échange d'objets" />
+            </div>
+            <div class="actions">
+                <button class="cta-button" onclick="genererFichiers()">Envoyer le message</button>
+            </div>
+        </section>
     </main>
-        <button onclick="genererFichiers()">Générer les fichiers</button>
-
     <script>
-    function genererFichiers() {
-        fetch('/generer-fichiers')
-            .then(response => response.text())
-            .then(data => alert(data))
-            .catch(error => console.error('Erreur:', error));
-    }
+        function genererFichiers() {
+            fetch('/generer-fichiers')
+                .then(response => response.text())
+                .then(data => alert(data))
+                .catch(error => console.error('Erreur:', error));
+        }
     </script>
-
     <%- include("../layouts/footer.ejs") %>
 </body>
 </html>

@@ -409,7 +409,7 @@ app.get("/generer-fichiers", (req, res) => {
         });
     });
 
-    res.send('Les fichiers commençant par "troc_g3" ont été générés avec succès pour chaque groupe.');
+    res.send('Messages envoyés avec succés!');
 });
 
 
